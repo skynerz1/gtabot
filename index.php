@@ -278,6 +278,11 @@ $groups = [
             "button_text" => "المهام 🔗",
             "button_url" => "https://t.me/fx2link/8"
         ],
+                        "d3m" => [
+            "text" => "اهلا وسهلا بك [$mention]\nهنا الدعم الفني توجه واكتب مشكلتك ونحلها لك",
+            "button_text" => "الدعم 🔗",
+            "button_url" => "https://t.me/itddbot"
+        ],
     ],
         "-1002566159762" => [
         "desc" => [
@@ -329,6 +334,31 @@ $groups = [
 
 // أمر "وصف"
 if (in_array($text, ['وصف', 'رسبون', 'رسبونات'])) {
+    if (isset($groups[$chat_id]['d3m'])) {
+        $data = $groups[$chat_id]['d3m'];
+        $caption = str_replace("{mention}", $mention, $data['caption']);
+        bot('sendPhoto', [
+            'chat_id' => $chat_id,
+            'photo' => $data['photo'],
+            'caption' => $caption,
+            'parse_mode' => 'Markdown',
+            'reply_to_message_id' => $message_id,
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [['text' => $data['button_text'], 'url' => $data['button_url']]]
+                ]
+            ])
+        ]);
+    } else {
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "⚠️ لا يوجد وصف لهذه المجموعة.",
+            'reply_to_message_id' => $message_id,
+        ]);
+    }
+    exit;
+}
+if (in_array($text, ['الدعم الفني', 'الدعم', 'دعم'])) {
     if (isset($groups[$chat_id]['desc'])) {
         $data = $groups[$chat_id]['desc'];
         $caption = str_replace("{mention}", $mention, $data['caption']);
