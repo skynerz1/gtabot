@@ -53,7 +53,7 @@ if ($message) {
     }
 
     // كلمات محظورة
-    $banned = ["اكسزعيم", "كيلوا", "جنتل", "fsgta", "xz3eem", "بايو", "@YYYYF", "bio"];
+    $banned = ["اكسزعيم", "كيلوا", "جنتل", "fsgta", "xz3eem", "بايو", "@YYYYF", "bio" ,"احبك"];
     foreach ($banned as $word) {
         if (mb_stripos($text, $word) !== false) {
             // حذف رسالة المستخدم
@@ -490,6 +490,48 @@ if ($text === "رسايلي" || $text === "رسائلي") {
             "اسطورهه $mention",
             "شقيت الرسايل شق من قوتك ! $mention",
             "حي عينك وعدد الرسايل استمر $mention"
+
+        ];
+        $reply = $replies[array_rand($replies)];
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => $reply,
+            'parse_mode' => 'Markdown',
+            'reply_to_message_id' => $message_id
+        ]);
+        exit;
+    }
+       $text = mb_strtolower($text);
+if ($text === "سلام عليكم" || $text === "السلام عليكم ورحمة الله وبركاته") {
+    // نفذ الأمر هنا
+
+
+        $replies = [
+            "عليكم السلام اهلا بك ـ$mention",
+            "وعليكم السلام ورحمه الله وبركاته منورنا",
+            "منور وعليكم السلام $mention"
+           
+
+        ];
+        $reply = $replies[array_rand($replies)];
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => $reply,
+            'parse_mode' => 'Markdown',
+            'reply_to_message_id' => $message_id
+        ]);
+        exit;
+    }
+       $text = mb_strtolower($text);
+if ($text === "راتب" || $text === "راتبي") {
+    // نفذ الأمر هنا
+
+
+        $replies = [
+            "انت مانشوفك الا اذا جيت تاخذ راتبك",
+            "بس راتبب؟؟! تفاعل بالقروب بعد هههه",
+            "اليوم راتبك اكثر تستاهل $mention"
+           
 
         ];
         $reply = $replies[array_rand($replies)];
