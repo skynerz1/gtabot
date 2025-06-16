@@ -334,8 +334,8 @@ $groups = [
 
 // أمر "وصف"
 if (in_array($text, ['وصف', 'رسبون', 'رسبونات'])) {
-    if (isset($groups[$chat_id]['d3m'])) {
-        $data = $groups[$chat_id]['d3m'];
+    if (isset($groups[$chat_id]['desc'])) {
+        $data = $groups[$chat_id]['desc'];
         $caption = str_replace("{mention}", $mention, $data['caption']);
         bot('sendPhoto', [
             'chat_id' => $chat_id,
@@ -359,8 +359,8 @@ if (in_array($text, ['وصف', 'رسبون', 'رسبونات'])) {
     exit;
 }
 if (in_array($text, ['الدعم الفني', 'الدعم', 'دعم'])) {
-    if (isset($groups[$chat_id]['desc'])) {
-        $data = $groups[$chat_id]['desc'];
+    if (isset($groups[$chat_id]['d3m'])) {
+        $data = $groups[$chat_id]['d3m'];
         $caption = str_replace("{mention}", $mention, $data['caption']);
         bot('sendPhoto', [
             'chat_id' => $chat_id,
@@ -377,7 +377,7 @@ if (in_array($text, ['الدعم الفني', 'الدعم', 'دعم'])) {
     } else {
         bot('sendMessage', [
             'chat_id' => $chat_id,
-            'text' => "⚠️ لا يوجد وصف لهذه المجموعة.",
+            'text' => "⚠️ لا يوجد دعم لهذه المجموعة.",
             'reply_to_message_id' => $message_id,
         ]);
     }
