@@ -278,7 +278,7 @@ $groups = [
             "button_text" => "المهام 🔗",
             "button_url" => "https://t.me/fx2link/8"
         ],
-                        "d3m" => [
+                        "dam" => [
             "text" => "اهلا وسهلا بك [$mention]\nهنا الدعم الفني توجه واكتب مشكلتك ونحلها لك",
             "button_text" => "الدعم 🔗",
             "button_url" => "https://t.me/itddbot"
@@ -359,8 +359,8 @@ if (in_array($text, ['وصف', 'رسبون', 'رسبونات'])) {
     exit;
 }
 if (in_array($text, ['الدعم الفني', 'الدعم', 'دعم'])) {
-    if (isset($groups[$chat_id]['d3m'])) {
-        $data = $groups[$chat_id]['d3m'];
+    if (isset($groups[$chat_id]['dam'])) {
+        $data = $groups[$chat_id]['dam'];
         $caption = str_replace("{mention}", $mention, $data['caption']);
         bot('sendPhoto', [
             'chat_id' => $chat_id,
