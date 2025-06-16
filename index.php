@@ -257,13 +257,13 @@ if (mb_strtolower($text) === "عرض الردود") {
 $groups = [
     "-1002509155667" => [
         "desc" => [
-            "photo" => "https://t.me/JJF_l/10888",
+            "photo" => "https://t.me/fx2ch/10888",
             "caption" => "ياهلا بـ{mention}!\nهذي جميع رسبونات FX2",
             "button_text" => "📡 قناة FX2",
             "button_url" => "https://t.me/fx2gta5"
         ],
         "roles" => [
-            "photo" => "https://t.me/JJF_l/10888",
+            "photo" => "https://t.me/fx2ch/10888",
             "caption" => "ياهلا بـ{mention}!\nهذي جميع رتب قروب fx2 role",
             "button_text" => "📡 قناة الرتب",
             "button_url" => "https://t.me/fx2role"
@@ -281,13 +281,13 @@ $groups = [
     ],
         "-1002566159762" => [
         "desc" => [
-            "photo" => "https://t.me/JJF_l/10888",
+            "photo" => "https://t.me/fx2ch/10888",
             "caption" => "ياهلا بـ{mention}!\nهذي جميع رسبونات FX2",
             "button_text" => "📡 قناة FX2",
             "button_url" => "https://t.me/fx2gta5"
         ],
         "roles" => [
-            "photo" => "https://t.me/JJF_l/10888",
+            "photo" => "https://t.me/fx3ch/10888",
             "caption" => "ياهلا بـ{mention}!\nهذي جميع رتب قروب fx2 role",
             "button_text" => "📡 قناة الرتب",
             "button_url" => "https://t.me/fx2role"
