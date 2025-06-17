@@ -689,7 +689,7 @@ if($text == "ذ" or $text == "ذكر" or $text == "د" or $text == "اذكار")
         "reply_markup" => json_encode([
             "inline_keyboard" => [
                 [
-                    ["text" => "- 𝕊𝕠𝕦𝕣𝕤𝕖 𝔻𝕗𝕜𝕫", "url" => "https://t.me/JJF_l"]
+                    ["text" => "- قناه الاذكار ✨", "url" => "https://t.me/KYY_E"]
                 ]
             ]
         ])
