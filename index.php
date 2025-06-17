@@ -679,7 +679,7 @@ if($text == "دعاء" or $text == "ادعيه" or $text == "د" or $text == "."
         ])
     ]);
 }
-$src_message = "https://t.me/KYY_E/".rand(4,50);
+$src_message = "https://t.me/KYY_E/".rand(4,7);
 if($text == "ذ" or $text == "ذكر" or $text == "د" or $text == "اذكار"){
     bot('sendMessage',[
         'chat_id' => $chat_id,
