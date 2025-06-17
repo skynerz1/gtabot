@@ -679,6 +679,22 @@ if($text == "دعاء" or $text == "ادعيه" or $text == "د" or $text == "."
         ])
     ]);
 }
+$src_message = "https://t.me/KYY_E/".rand(4,50);
+if($text == "ذ" or $text == "ذكر" or $text == "د" or $text == "اذكار"){
+    bot('sendMessage',[
+        'chat_id' => $chat_id,
+        'text' => html_entity_decode(get_meta_tags($src_message)['twitter:description']),
+        'reply_to_message_id' => $message_id,
+        "parse_mode" => "markdown",
+        "reply_markup" => json_encode([
+            "inline_keyboard" => [
+                [
+                    ["text" => "- 𝕊𝕠𝕦𝕣𝕤𝕖 𝔻𝕗𝕜𝕫", "url" => "https://t.me/JJF_l"]
+                ]
+            ]
+        ])
+    ]);
+}
 
     
 
