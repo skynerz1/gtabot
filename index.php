@@ -32,10 +32,7 @@ if ($message) {
     $chat_id = $message['chat']['id'];
     $text = $message['text'] ?? '';
     $message_id = $message['message_id'];
-$name = $message->from->first_name;
-$user = $message->from->username;
 
-$mention = $user ? "[$name](https://t.me/$user)" : $name;
 
 
     
@@ -472,24 +469,29 @@ if (in_array($text, ['رتب', 'الرتب', 'الرتبات'])) {
 
 
     // ردود على برب
-    if (mb_strtolower($text) === "برب") {
-        $replies = [
-            "الله معك $mention 👋 لاتنسى ترجع لنا.",
-            "$mention 👋 لا تطول علينا، بننتظرك.",
-            "$mention لا تنسى ترجع ترى بنشتاق 🥲",
-            "في أمان الله $mention، لا تتأخر 💨",
-            "$mention رجعتك أهم من ذهابك 😎",
-            "في امان الله لاتطول علينا $mention"
-        ];
-        $reply = $replies[array_rand($replies)];
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => $reply,
-            'parse_mode' => 'Markdown',
-            'reply_to_message_id' => $message_id
-        ]);
-        exit;
-    }
+   $name = str_replace(['[',']','(',')'], '', $message->from->first_name);
+$user = $message->from->username;
+$mention = $user ? "[$name](https://t.me/$user)" : $name;
+
+if (mb_strtolower($text) === "برب") {
+    $replies = [
+        "الله معك $mention 👋 لاتنسى ترجع لنا.",
+        "$mention 👋 لا تطول علينا، بننتظرك.",
+        "$mention لا تنسى ترجع ترى بنشتاق 🥲",
+        "في أمان الله $mention، لا تتأخر 💨",
+        "$mention رجعتك أهم من ذهابك 😎",
+        "في امان الله لاتطول علينا $mention"
+    ];
+    $reply = $replies[array_rand($replies)];
+    bot('sendMessage', [
+        'chat_id' => $chat_id,
+        'text' => $reply,
+        'parse_mode' => 'Markdown',
+        'reply_to_message_id' => $message_id
+    ]);
+    exit;
+}
+
 
     // ردود على باك
     if (mb_strtolower($text) === "باك") {
