@@ -32,9 +32,11 @@ if ($message) {
     $chat_id = $message['chat']['id'];
     $text = $message['text'] ?? '';
     $message_id = $message['message_id'];
-    $user = $message['from']['username'] ?? null;
-    $name = $message['from']['first_name'] ?? '';
-    $mention = $user ? "[$name](https://t.me/$user)" : $name;
+$name = $message->from->first_name;
+$user = $message->from->username;
+
+$mention = $user ? "[$name](https://t.me/$user)" : $name;
+
 
     
 
@@ -679,8 +681,8 @@ if($text == "دعاء" or $text == "ادعيه" or $text == "د" or $text == "."
         ])
     ]);
 }
-$src_message = "https://t.me/KYY_E/".rand(4,7);
-if($text == "ذ" or $text == "ذكر" or $text == "د" or $text == "اذكار"){
+$src_message = "https://t.me/KYY_E/".rand(4,13);
+if($text == "ذ" or $text == "ذكر" or $text == "ذ" or $text == "اذكار"){
     bot('sendMessage',[
         'chat_id' => $chat_id,
         'text' => html_entity_decode(get_meta_tags($src_message)['twitter:description']),
