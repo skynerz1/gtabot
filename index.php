@@ -32,15 +32,9 @@ if ($message) {
     $chat_id = $message['chat']['id'];
     $text = $message['text'] ?? '';
     $message_id = $message['message_id'];
-$user = $message['from']['username'] ?? null;
-$name = $message['from']['first_name'] ?? '';
-
-// تنظيف الاسم من أي رموز Markdown أو نزول سطر
-$name = str_replace(["\n", "\r", "[", "]", "(", ")"], '', $name);
-
-// توليد المنشن
-$mention = $user ? "[$name](https://t.me/$user)" : $name;
-
+    $user = $message['from']['username'] ?? null;
+    $name = $message['from']['first_name'] ?? '';
+    $mention = $user ? "[$name](https://t.me/$user)" : $name;
 
     
 
