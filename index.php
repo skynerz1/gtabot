@@ -257,16 +257,27 @@ if ($message) {
     $text = $message['text'] ?? '';
     $chat_id = $message['chat']['id'];
     $msg_id = $message['message_id'];
+    $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
-    // تنفيذ قفل القروب مع سبب
+    $allowed_ids = [123456789]; // استبدلها بـ ID حقك
+
+    // أمر قفل القروب
     if (mb_stripos($text, "قفل القروب") === 0) {
+
+        if (!in_array($user_id, $allowed_ids)) {
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "⚠️ عذرًا، الأمر مخصص فقط لصاحب الصلاحية."
+            ]);
+            return;
+        }
+
         $reason = trim(str_replace("قفل القروب", "", $text));
         if ($reason == "") {
             $reason = "تم قفل القروب بدون سبب.";
         }
 
-        // قفل القروب: إلغاء السماح بإرسال الرسائل
         bot('setChatPermissions', [
             'chat_id' => $chat_id,
             'permissions' => json_encode([
@@ -274,23 +285,21 @@ if ($message) {
             ])
         ]);
 
-$keyboard = [
-    'inline_keyboard' => [
-        [['text' => "الرسبونات", 'url' => "https://t.me/fx2gta5"]],
-        [
-            ['text' => "بوت الدعم", 'url' => "https://t.me/itddbot"],
-            ['text' => "الرتب", 'url' => "https://t.me/fx2role"]
-        ],
-        [['text' => "القوانين", 'url' => "https://t.me/fx2link/3"]],
-        [
-            ['text' => "كلشي يخصنا", 'url' => "https://t.me/fx2link/5"],
-            ['text' => "مهام", 'url' => "https://t.me/fx2link/8"]
-        ]
-    ]
-];
+        $keyboard = [
+            'inline_keyboard' => [
+                [['text' => "الرسبونات", 'url' => "https://t.me/fx2gta5"]],
+                [
+                    ['text' => "بوت الدعم", 'url' => "https://t.me/itddbot"],
+                    ['text' => "الرتب", 'url' => "https://t.me/fx2role"]
+                ],
+                [['text' => "القوانين", 'url' => "https://t.me/fx2link/3"]],
+                [
+                    ['text' => "كلشي يخصنا", 'url' => "https://t.me/fx2link/5"],
+                    ['text' => "مهام", 'url' => "https://t.me/fx2link/8"]
+                ]
+            ]
+        ];
 
-
-        // إرسال رسالة السبب مع الأزرار
         $sent = bot('sendMessage', [
             'chat_id' => $chat_id,
             'text' => "🚫 *تم قفل القروب*\n📌 السبب: $reason",
@@ -298,13 +307,20 @@ $keyboard = [
             'reply_markup' => json_encode($keyboard)
         ]);
 
-        // حفظ ID الرسالة عشان نحذفها لاحقًا
         file_put_contents($lockFile, $sent['result']['message_id']);
     }
 
-    // فتح القروب
+    // أمر فتح القروب
     if (mb_strtolower($text) == "فتح القروب") {
-        // فتح الإرسال
+
+        if (!in_array($user_id, $allowed_ids)) {
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "⚠️ عذرًا، الأمر مخصص فقط لصاحب الصلاحية."
+            ]);
+            return;
+        }
+
         bot('setChatPermissions', [
             'chat_id' => $chat_id,
             'permissions' => json_encode([
@@ -319,7 +335,6 @@ $keyboard = [
             ])
         ]);
 
-        // حذف رسالة القفل إن وجدت
         if (file_exists($lockFile)) {
             $lockMsgId = file_get_contents($lockFile);
             bot('deleteMessage', [
@@ -329,13 +344,16 @@ $keyboard = [
             unlink($lockFile);
         }
 
-        // إرسال تأكيد
         bot('sendMessage', [
             'chat_id' => $chat_id,
             'text' => "✅ تم فتح القروب"
         ]);
     }
 }
+
+
+
+
     
 // تعريف بيانات المجموعات مباشرة كمصفوفة PHP بدل JSON
 $groups = [
