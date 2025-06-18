@@ -260,7 +260,8 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
-    $allowed_ids = [1965941065 , 7679287539]; // استبدلها بـ ID حقك
+$allowed_ids = [1965941065, 7679287539]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
+
 
     // أمر قفل القروب
     if (mb_stripos($text, "قفل القروب") === 0) {
