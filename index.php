@@ -256,31 +256,8 @@ if (mb_strtolower($text) === "عرض الردود") {
 if ($message) {
     $text = $message['text'] ?? '';
     $chat_id = $message['chat']['id'];
-    $user_id = $message['from']['id'];  // مستخدم مرسل الرسالة
     $msg_id = $message['message_id'];
     $lockFile = "lockmsg_$chat_id.txt";
-
-    // جلب صلاحيات المستخدم في المجموعة
-    $member = bot('getChatMember', [
-        'chat_id' => $chat_id,
-        'user_id' => $user_id
-    ]);
-    $status = $member['result']['status'] ?? '';
-    $can_manage_chat = $member['result']['can_manage_chat'] ?? false;
-    $is_creator = ($status === 'creator');
-    $is_admin = ($status === 'administrator');
-
-    // تحقق الصلاحيات: فقط منشئ أو مسؤول عنده صلاحية إدارة المحادثات
-    $has_permission = $is_creator || ($is_admin && $can_manage_chat);
-
-    if (!$has_permission) {
-        // رد ممنوع بدون صلاحية
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "⚠️ عذرًا، ليس لديك صلاحية إدارة القروب."
-        ]);
-        exit;
-    }
 
     // تنفيذ قفل القروب مع سبب
     if (mb_stripos($text, "قفل القروب") === 0) {
@@ -292,32 +269,26 @@ if ($message) {
         // قفل القروب: إلغاء السماح بإرسال الرسائل
         bot('setChatPermissions', [
             'chat_id' => $chat_id,
-            'permissions' => [
-                'can_send_messages' => false,
-                'can_send_media_messages' => false,
-                'can_send_polls' => false,
-                'can_send_other_messages' => false,
-                'can_add_web_page_previews' => false,
-                'can_change_info' => false,
-                'can_invite_users' => false,
-                'can_pin_messages' => false,
-            ]
+            'permissions' => json_encode([
+                'can_send_messages' => false
+            ])
         ]);
 
-        $keyboard = [
-            'inline_keyboard' => [
-                [['text' => "الرسبونات", 'url' => "https://t.me/fx2gta5"]],
-                [
-                    ['text' => "بوت الدعم", 'url' => "https://t.me/itddbot"],
-                    ['text' => "الرتب", 'url' => "https://t.me/fx2role"]
-                ],
-                [['text' => "القوانين", 'url' => "https://t.me/fx2link/3"]],
-                [
-                    ['text' => "كلشي يخصنا", 'url' => "https://t.me/fx2link/5"],
-                    ['text' => "مهام", 'url' => "https://t.me/fx2link/8"]
-                ]
-            ]
-        ];
+$keyboard = [
+    'inline_keyboard' => [
+        [['text' => "الرسبونات", 'url' => "https://t.me/fx2gta5"]],
+        [
+            ['text' => "بوت الدعم", 'url' => "https://t.me/itddbot"],
+            ['text' => "الرتب", 'url' => "https://t.me/fx2role"]
+        ],
+        [['text' => "القوانين", 'url' => "https://t.me/fx2link/3"]],
+        [
+            ['text' => "كلشي يخصنا", 'url' => "https://t.me/fx2link/5"],
+            ['text' => "مهام", 'url' => "https://t.me/fx2link/8"]
+        ]
+    ]
+];
+
 
         // إرسال رسالة السبب مع الأزرار
         $sent = bot('sendMessage', [
@@ -336,7 +307,7 @@ if ($message) {
         // فتح الإرسال
         bot('setChatPermissions', [
             'chat_id' => $chat_id,
-            'permissions' => [
+            'permissions' => json_encode([
                 'can_send_messages' => true,
                 'can_send_media_messages' => true,
                 'can_send_polls' => true,
@@ -345,7 +316,7 @@ if ($message) {
                 'can_change_info' => false,
                 'can_invite_users' => true,
                 'can_pin_messages' => false
-            ]
+            ])
         ]);
 
         // حذف رسالة القفل إن وجدت
@@ -365,7 +336,6 @@ if ($message) {
         ]);
     }
 }
-
     
 // تعريف بيانات المجموعات مباشرة كمصفوفة PHP بدل JSON
 $groups = [
