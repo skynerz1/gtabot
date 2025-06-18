@@ -252,6 +252,82 @@ if (mb_strtolower($text) === "عرض الردود") {
     exit;
 }
 
+
+if ($message) {
+    $text = $message['text'] ?? '';
+    $chat_id = $message['chat']['id'];
+    $msg_id = $message['message_id'];
+    $lockFile = "lockmsg_$chat_id.txt";
+
+    // تنفيذ قفل القروب مع سبب
+    if (mb_stripos($text, "قفل القروب") === 0) {
+        $reason = trim(str_replace("قفل القروب", "", $text));
+        if ($reason == "") {
+            $reason = "تم قفل القروب بدون سبب.";
+        }
+
+        // قفل القروب: إلغاء السماح بإرسال الرسائل
+        bot('setChatPermissions', [
+            'chat_id' => $chat_id,
+            'permissions' => json_encode([
+                'can_send_messages' => false
+            ])
+        ]);
+
+        // أزرار روابط القنوات
+        $keyboard = [
+            'inline_keyboard' => [
+                [['text' => "📡 قناتنا 1", 'url' => "https://t.me/yourchannel1"]],
+                [['text' => "🎮 قناتنا 2", 'url' => "https://t.me/yourchannel2"]],
+            ]
+        ];
+
+        // إرسال رسالة السبب مع الأزرار
+        $sent = bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "🚫 *تم قفل القروب*\n📌 السبب: $reason",
+            'parse_mode' => 'Markdown',
+            'reply_markup' => json_encode($keyboard)
+        ]);
+
+        // حفظ ID الرسالة عشان نحذفها لاحقًا
+        file_put_contents($lockFile, $sent['result']['message_id']);
+    }
+
+    // فتح القروب
+    if (mb_strtolower($text) == "فتح القروب") {
+        // فتح الإرسال
+        bot('setChatPermissions', [
+            'chat_id' => $chat_id,
+            'permissions' => json_encode([
+                'can_send_messages' => true,
+                'can_send_media_messages' => true,
+                'can_send_polls' => true,
+                'can_send_other_messages' => true,
+                'can_add_web_page_previews' => true,
+                'can_change_info' => false,
+                'can_invite_users' => true,
+                'can_pin_messages' => false
+            ])
+        ]);
+
+        // حذف رسالة القفل إن وجدت
+        if (file_exists($lockFile)) {
+            $lockMsgId = file_get_contents($lockFile);
+            bot('deleteMessage', [
+                'chat_id' => $chat_id,
+                'message_id' => $lockMsgId
+            ]);
+            unlink($lockFile);
+        }
+
+        // إرسال تأكيد
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "✅ تم فتح القروب"
+        ]);
+    }
+}
     
 // تعريف بيانات المجموعات مباشرة كمصفوفة PHP بدل JSON
 $groups = [
