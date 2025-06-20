@@ -32,9 +32,10 @@ if ($message) {
     $chat_id = $message['chat']['id'];
     $text = $message['text'] ?? '';
     $message_id = $message['message_id'];
-    $user = $message['from']['username'] ?? null;
-    $name = $message['from']['first_name'] ?? '';
-    $mention = $user ? "[$name](https://t.me/$user)" : $name;
+$user_id = $message['from']['id'] ?? null;
+$name = $message['from']['first_name'] ?? '';
+$mention = $user_id ? "[$name](tg://user?id=$user_id)" : $name;
+
 
     
 
