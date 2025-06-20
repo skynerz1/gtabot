@@ -35,6 +35,7 @@ if ($message) {
 $user_id = $message['from']['id'] ?? null;
 $name = $message['from']['first_name'] ?? '';
 $mention = $user_id ? "[$name](tg://user?id=$user_id)" : $name;
+}
 
 
     
