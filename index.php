@@ -261,6 +261,54 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
+      $allowed_ids = [1965941065, 7679287539, 6471236814];
+
+    // تفعيل المؤقت
+    if (mb_strtolower($text) == "تفعيل المؤقت") {
+        if (!in_array($user_id, $allowed_ids)) {
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "⚠️ عذرًا، هذا الأمر مخصص فقط للأشخاص المصرّح لهم."
+            ]);
+            return;
+        }
+
+        // تفعيل وضع البطء لـ 10 ثواني
+        bot('setChatSlowModeDelay', [
+            'chat_id' => $chat_id,
+            'slow_mode_delay' => 10
+        ]);
+
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "⏱️ تم تفعيل المؤقت\nالآن لا يمكن لأي عضو إرسال رسالة إلا كل 10 ثواني."
+        ]);
+    }
+
+    // تعطيل المؤقت
+    if (mb_strtolower($text) == "تعطيل المؤقت") {
+        if (!in_array($user_id, $allowed_ids)) {
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "⚠️ عذرًا، هذا الأمر مخصص فقط للأشخاص المصرّح لهم."
+            ]);
+            return;
+        }
+
+        // تعطيل وضع البطء (جعله صفر)
+        bot('setChatSlowModeDelay', [
+            'chat_id' => $chat_id,
+            'slow_mode_delay' => 0
+        ]);
+
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "✅ تم تعطيل المؤقت\nيمكن الآن للجميع الكتابة بدون انتظار."
+        ]);
+    }
+}
+
+
 $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
 
 
@@ -831,7 +879,7 @@ if($text == "ذ" or $text == "ذكر" or $text == "." or $text == "اذكار"){
         exit;
     }
 
-} elseif ($callback_query) {
+ elseif ($callback_query) {
     $chat_id = $callback_query['message']['chat']['id'];
     $message_id = $callback_query['message']['message_id'];
     $data = $callback_query['data'];
