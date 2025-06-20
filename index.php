@@ -54,7 +54,7 @@ $mention = $user_id ? "[$name](tg://user?id=$user_id)" : $name;
     }
 
     // كلمات محظورة
-    $banned = ["اكسزعيم", "كيلوا", "جنتل", "fsgta", "xz3eem", "بايو", "@YYYYF", "bio" ,"احبك"];
+    $banned = ["اكسزعيم", "كيلوا", "جنتل", "fsgta", "xz3eem", "بايو", "@YYYYF", "bio" ,"احبك" , "اكس زعيم", "كس","كسمك","قحبه"];
     foreach ($banned as $word) {
         if (mb_stripos($text, $word) !== false) {
             // حذف رسالة المستخدم
@@ -583,6 +583,7 @@ if (in_array($text, ['رتب', 'الرتب', 'الرتبات'])) {
             "$mention رجعتك أهم من ذهابك 😎",
             "في امان الله لاتطول علينا $mention",
             "بتوفيق نستنى رجعتك <$mention>",
+            "هممم بالتوفيق ي عيني [ $mention ]",
         ];
         $reply = $replies[array_rand($replies)];
         bot('sendMessage', [
@@ -606,6 +607,7 @@ if (in_array($text, ['رتب', 'الرتب', 'الرتبات'])) {
             "منوورر يـ هلا $mention ❤️",
             "ولكمم باك 🫶.\n [ $mention ]",
             "اهلا فيكك منجديد ي عيني $mention",
+            "منورنا يــــهلااا $mention"
         ];
         $reply = $replies[array_rand($replies)];
         bot('sendMessage', [
@@ -787,7 +789,7 @@ if($text == "دعاء" or $text == "ادعيه" or $text == "د" or $text == "."
         ])
     ]);
 }
-$src_message = "https://t.me/KYY_E/".rand(4,13);
+$src_message = "https://t.me/KYY_E/".rand(4,20);
 if($text == "ذ" or $text == "ذكر" or $text == "ذ" or $text == "اذكار"){
     bot('sendMessage',[
         'chat_id' => $chat_id,
