@@ -790,7 +790,7 @@ if($text == "دعاء" or $text == "ادعيه" or $text == "د" or $text == "."
     ]);
 }
 $src_message = "https://t.me/KYY_E/".rand(4,20);
-if($text == "ذ" or $text == "ذكر" or $text == "ذ" or $text == "اذكار"){
+if($text == "ذ" or $text == "ذكر" or $text == "." or $text == "اذكار"){
     bot('sendMessage',[
         'chat_id' => $chat_id,
         'text' => html_entity_decode(get_meta_tags($src_message)['twitter:description']),
