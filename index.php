@@ -874,7 +874,7 @@ if($text == "ذ" or $text == "ذكر" or $text == "." or $text == "اذكار"){
         exit;
     }
 
-} elseif ($callback_query) {
+ elseif ($callback_query) {
     $chat_id = $callback_query['message']['chat']['id'];
     $message_id = $callback_query['message']['message_id'];
     $data = $callback_query['data'];
