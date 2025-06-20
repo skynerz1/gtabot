@@ -261,8 +261,48 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
-    
+// تفعيل المؤقت (الوضع البطيء)
+    if (mb_strtolower($text) == "تفعيل المؤقت") {
+        if (!in_array($user_id, $allowed_ids)) {
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "⚠️ عذرًا، الأمر مخصص فقط لصاحب الصلاحية."
+            ]);
+            return;
+        }
 
+        bot('setChatSlowModeDelay', [
+            'chat_id' => $chat_id,
+            'slow_mode_delay' => 10 // 10 ثواني
+        ]);
+
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "⏱ تم تفعيل المؤقت (الوضع البطيء) لمدة 10 ثواني ✅"
+        ]);
+    }
+
+    // تعطيل المؤقت
+    if (mb_strtolower($text) == "تعطيل المؤقت") {
+        if (!in_array($user_id, $allowed_ids)) {
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "⚠️ عذرًا، الأمر مخصص فقط لصاحب الصلاحية."
+            ]);
+            return;
+        }
+
+        bot('setChatSlowModeDelay', [
+            'chat_id' => $chat_id,
+            'slow_mode_delay' => 0 // تعطيل
+        ]);
+
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "🚫 تم تعطيل المؤقت (الوضع البطيء) ✅"
+        ]);
+    }
+}
 
 $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
 
