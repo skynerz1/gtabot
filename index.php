@@ -261,9 +261,9 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
-      $allowed_ids = [1965941065, 7679287539, 6471236814];
+    $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // الأشخاص المصرّح لهم
 
-    // تفعيل المؤقت
+    // أمر: تفعيل المؤقت
     if (mb_strtolower($text) == "تفعيل المؤقت") {
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
@@ -273,19 +273,40 @@ if ($message) {
             return;
         }
 
-        // تفعيل وضع البطء لـ 10 ثواني
-        bot('setChatSlowModeDelay', [
+        // قفل الرسائل مؤقتًا
+        bot('setChatPermissions', [
             'chat_id' => $chat_id,
-            'slow_mode_delay' => 10
+            'permissions' => json_encode([
+                'can_send_messages' => false
+            ])
         ]);
 
         bot('sendMessage', [
             'chat_id' => $chat_id,
-            'text' => "⏱️ تم تفعيل المؤقت\nالآن لا يمكن لأي عضو إرسال رسالة إلا كل 10 ثواني."
+            'text' => "⏱️ تم تفعيل المؤقت\n🚫 تم منع الرسائل لمدة 10 ثوانٍ..."
+        ]);
+
+        // بعد 10 ثواني، نرجع نفتح الشات
+        sleep(10);
+        bot('setChatPermissions', [
+            'chat_id' => $chat_id,
+            'permissions' => json_encode([
+                'can_send_messages' => true,
+                'can_send_media_messages' => true,
+                'can_send_polls' => true,
+                'can_send_other_messages' => true,
+                'can_add_web_page_previews' => true,
+                'can_invite_users' => true
+            ])
+        ]);
+
+        bot('sendMessage', [
+            'chat_id' => $chat_id,
+            'text' => "✅ تم انتهاء المؤقت\nيمكن الآن للجميع الكتابة."
         ]);
     }
 
-    // تعطيل المؤقت
+    // أمر: تعطيل المؤقت يدويًا
     if (mb_strtolower($text) == "تعطيل المؤقت") {
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
@@ -295,26 +316,27 @@ if ($message) {
             return;
         }
 
-        // تعطيل وضع البطء (جعله صفر)
-        bot('setChatSlowModeDelay', [
+        // إعادة فتح الشات فورًا
+        bot('setChatPermissions', [
             'chat_id' => $chat_id,
-            'slow_mode_delay' => 0
+            'permissions' => json_encode([
+                'can_send_messages' => true,
+                'can_send_media_messages' => true,
+                'can_send_polls' => true,
+                'can_send_other_messages' => true,
+                'can_add_web_page_previews' => true,
+                'can_invite_users' => true
+            ])
         ]);
 
         bot('sendMessage', [
             'chat_id' => $chat_id,
-            'text' => "✅ تم تعطيل المؤقت\nيمكن الآن للجميع الكتابة بدون انتظار."
+            'text' => "❎ تم تعطيل المؤقت.\n✅ بإمكان الجميع الكتابة الآن."
         ]);
     }
-}
 
-
-$allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
-
-
-    // أمر قفل القروب
+    // أمر: قفل القروب
     if (mb_stripos($text, "قفل القروب") === 0) {
-
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
@@ -360,9 +382,8 @@ $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدل
         file_put_contents($lockFile, $sent['result']['message_id']);
     }
 
-    // أمر فتح القروب
+    // أمر: فتح القروب
     if (mb_strtolower($text) == "فتح القروب") {
-
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
