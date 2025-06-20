@@ -261,82 +261,15 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
-    $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // الأشخاص المصرّح لهم
+    
 
-    // أمر: تفعيل المؤقت
-    if (mb_strtolower($text) == "تفعيل المؤقت") {
-        if (!in_array($user_id, $allowed_ids)) {
-            bot('sendMessage', [
-                'chat_id' => $chat_id,
-                'text' => "⚠️ عذرًا، هذا الأمر مخصص فقط للأشخاص المصرّح لهم."
-            ]);
-            return;
-        }
 
-        // قفل الرسائل مؤقتًا
-        bot('setChatPermissions', [
-            'chat_id' => $chat_id,
-            'permissions' => json_encode([
-                'can_send_messages' => false
-            ])
-        ]);
+$allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
 
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "⏱️ تم تفعيل المؤقت\n🚫 تم منع الرسائل لمدة 10 ثوانٍ..."
-        ]);
 
-        // بعد 10 ثواني، نرجع نفتح الشات
-        sleep(10);
-        bot('setChatPermissions', [
-            'chat_id' => $chat_id,
-            'permissions' => json_encode([
-                'can_send_messages' => true,
-                'can_send_media_messages' => true,
-                'can_send_polls' => true,
-                'can_send_other_messages' => true,
-                'can_add_web_page_previews' => true,
-                'can_invite_users' => true
-            ])
-        ]);
-
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "✅ تم انتهاء المؤقت\nيمكن الآن للجميع الكتابة."
-        ]);
-    }
-
-    // أمر: تعطيل المؤقت يدويًا
-    if (mb_strtolower($text) == "تعطيل المؤقت") {
-        if (!in_array($user_id, $allowed_ids)) {
-            bot('sendMessage', [
-                'chat_id' => $chat_id,
-                'text' => "⚠️ عذرًا، هذا الأمر مخصص فقط للأشخاص المصرّح لهم."
-            ]);
-            return;
-        }
-
-        // إعادة فتح الشات فورًا
-        bot('setChatPermissions', [
-            'chat_id' => $chat_id,
-            'permissions' => json_encode([
-                'can_send_messages' => true,
-                'can_send_media_messages' => true,
-                'can_send_polls' => true,
-                'can_send_other_messages' => true,
-                'can_add_web_page_previews' => true,
-                'can_invite_users' => true
-            ])
-        ]);
-
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "❎ تم تعطيل المؤقت.\n✅ بإمكان الجميع الكتابة الآن."
-        ]);
-    }
-
-    // أمر: قفل القروب
+    // أمر قفل القروب
     if (mb_stripos($text, "قفل القروب") === 0) {
+
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
@@ -382,8 +315,9 @@ if ($message) {
         file_put_contents($lockFile, $sent['result']['message_id']);
     }
 
-    // أمر: فتح القروب
+    // أمر فتح القروب
     if (mb_strtolower($text) == "فتح القروب") {
+
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
@@ -900,7 +834,7 @@ if($text == "ذ" or $text == "ذكر" or $text == "." or $text == "اذكار"){
         exit;
     }
 
- elseif ($callback_query) {
+} elseif ($callback_query) {
     $chat_id = $callback_query['message']['chat']['id'];
     $message_id = $callback_query['message']['message_id'];
     $data = $callback_query['data'];
