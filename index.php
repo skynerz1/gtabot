@@ -822,6 +822,16 @@ if($text == "ذ" or $text == "ذكر" or $text == "." or $text == "اذكار"){
 }
 
 
+if (preg_match('/^احذف اخر (\d+)/', $text, $m)) {
+    $count = min(intval($m[1]), 50); // ما يتعدى 50
+    for ($i = 0; $i < $count; $i++) {
+        bot('deleteMessage', [
+            'chat_id' => $chat_id,
+            'message_id' => $msg_id - $i
+        ]);
+    }
+    bot('sendMessage', ['chat_id' => $chat_id, 'text' => "🧹 تم حذف $count رسالة"]);
+}
     
 
     // أوامر قراند مع أزرار تفاعلية
