@@ -462,7 +462,7 @@ if (in_array($text, ['الدعم الفني', 'الدعم', 'دعم'])) {
             'photo' => $data['photo'],
             'caption' => $caption,
             'parse_mode' => 'Markdown',
-            'reply_to_message_id' => $message_id,
+            'reply_to_message_id' => $message_id,       
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [['text' => $data['button_text'], 'url' => $data['button_url']]]
@@ -610,7 +610,7 @@ if (in_array($text, ['رتب', 'الرتب', 'الرتبات'])) {
 
 // ردود على رسايلي
     $text = mb_strtolower($text);
-if ($text === "رسايلي" || $text === "رسائلي") {
+if ($text === "رسايلي" || $text === "رسائلي" || $text === "ر") {
     // نفذ الأمر هنا
 
 
