@@ -37,19 +37,7 @@ $name = $message['from']['first_name'] ?? '';
 $mention = $user_id ? "[$name](tg://user?id=$user_id)" : $name;
 }
 
-
-$chat_id = '-1001234567890'; // ← استبدل هذا بـ ID القروب أو القناة أو الشخص
-$message = "⏰ تم إرسال هذه الرسالة تلقائيًا عبر كرون جوب.";
-
-// إرسال الرسالة
-$response = file_get_contents("https://api.telegram.org/bot$API_KEY/sendMessage?chat_id=$chat_id&text=" . urlencode($message));
-
-// للتجربة المحلية، عرض النتيجة
-echo $response;
-
-    
-
-     
+ 
 
     // أمر /start
     if ($text === "/start") {
