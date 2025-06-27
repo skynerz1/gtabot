@@ -262,18 +262,13 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
-    // القروب المسموح فقط
-    $allowed_group_id = -1002509155667; // ← استبدلها بـ ID القروب الحقيقي
 
-    // تأكد أنه فقط القروب المسموح
-    if ($chat_id != $allowed_group_id) {
-        return;
-    }
+    $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
 
-    $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // المستخدمين المسموح لهم
 
-    // قفل القروب
+    // أمر قفل القروب
     if (mb_stripos($text, "قفل القروب") === 0) {
+
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
@@ -319,109 +314,9 @@ if ($message) {
         file_put_contents($lockFile, $sent['result']['message_id']);
     }
 
-    // فتح القروب
+    // أمر فتح القروب
     if (mb_strtolower($text) == "فتح القروب") {
-        if (!in_array($user_id, $allowed_ids)) {
-            bot('sendMessage', [
-                'chat_id' => $chat_id,
-                'text' => "⚠️ عذرًا، الأمر مخصص فقط لصاحب الصلاحية."
-            ]);
-            return;
-        }
 
-        bot('setChatPermissions', [
-            'chat_id' => $chat_id,
-            'permissions' => json_encode([
-                'can_send_messages' => true,
-                'can_send_media_messages' => true,
-                'can_send_polls' => true,
-                'can_send_other_messages' => true,
-                'can_add_web_page_previews' => true,
-                'can_change_info' => false,
-                'can_invite_users' => true,
-                'can_pin_messages' => false
-            ])
-        ]);
-
-        if (file_exists($lockFile)) {
-            $lockMsgId = file_get_contents($lockFile);
-            bot('deleteMessage', [
-                'chat_id' => $chat_id,
-                'message_id' => $lockMsgId
-            ]);
-            unlink($lockFile);
-        }
-
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "✅ تم فتح القروب"
-        ]);
-    }
-}
-
-if ($message) {
-    $text = $message['text'] ?? '';
-    $chat_id = $message['chat']['id'];
-    $msg_id = $message['message_id'];
-    $user_id = $message['from']['id'];
-    $lockFile = "lockmsg_$chat_id.txt";
-
-    // القروب المسموح فقط
-    $allowed_group_id = -1002876941832; // ← استبدلها بـ ID القروب الحقيقي
-
-    // تأكد أنه فقط القروب المسموح
-    if ($chat_id != $allowed_group_id) {
-        return;
-    }
-
-    $allowed_ids = [1965941065, 6440436508, 6440436508, 6440436508]; // المستخدمين المسموح لهم
-
-    // قفل القروب
-    if (mb_stripos($text, "قفل القروب") === 0) {
-        if (!in_array($user_id, $allowed_ids)) {
-            bot('sendMessage', [
-                'chat_id' => $chat_id,
-                'text' => "⚠️ عذرًا، الأمر مخصص فقط لصاحب الصلاحية."
-            ]);
-            return;
-        }
-
-        $reason = trim(str_replace("قفل القروب", "", $text));
-        if ($reason == "") {
-            $reason = "تم قفل القروب بدون سبب.";
-        }
-
-        bot('setChatPermissions', [
-            'chat_id' => $chat_id,
-            'permissions' => json_encode([
-                'can_send_messages' => false
-            ])
-        ]);
-
-$keyboard = [
-    'inline_keyboard' => [
-        [
-            ['text' => "الرسبونات", 'url' => "https://t.me/uwtwtwti"]
-        ],
-        [
-            ['text' => "القوانين", 'url' => "https://t.me/rjdjdjjIe/5"]
-        ]
-    ]
-];
-
-
-        $sent = bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "🚫 *تم قفل القروب*\n📌 السبب: $reason",
-            'parse_mode' => 'Markdown',
-            'reply_markup' => json_encode($keyboard)
-        ]);
-
-        file_put_contents($lockFile, $sent['result']['message_id']);
-    }
-
-    // فتح القروب
-    if (mb_strtolower($text) == "فتح القروب") {
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
