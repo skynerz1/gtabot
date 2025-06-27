@@ -262,13 +262,14 @@ if ($message) {
     $user_id = $message['from']['id'];
     $lockFile = "lockmsg_$chat_id.txt";
 
+    // القروبات المسموح بها
+    $allowed_group_ids = [-1002509155667, -1002876941832]; // ← استبدلهم بـ IDs قروباتك
+    $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043, 6440436508];
 
-    $allowed_ids = [1965941065, 7679287539, 6471236814, 6029433043]; // استبدلها بـ IDs الأشخاص اللي تبيهم يكون لهم صلاحية
-
+    if (!in_array($chat_id, $allowed_group_ids)) return;
 
     // أمر قفل القروب
     if (mb_stripos($text, "قفل القروب") === 0) {
-
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
@@ -278,10 +279,9 @@ if ($message) {
         }
 
         $reason = trim(str_replace("قفل القروب", "", $text));
-        if ($reason == "") {
-            $reason = "تم قفل القروب بدون سبب.";
-        }
+        if ($reason == "") $reason = "تم قفل القروب بدون سبب.";
 
+        // حظر الإرسال
         bot('setChatPermissions', [
             'chat_id' => $chat_id,
             'permissions' => json_encode([
@@ -289,20 +289,28 @@ if ($message) {
             ])
         ]);
 
-        $keyboard = [
-            'inline_keyboard' => [
-                [['text' => "الرسبونات", 'url' => "https://t.me/fx2gta5"]],
-                [
-                    ['text' => "بوت الدعم", 'url' => "https://t.me/itddbot"],
-                    ['text' => "الرتب", 'url' => "https://t.me/fx2role"]
-                ],
-                [['text' => "القوانين", 'url' => "https://t.me/fx2link/3"]],
-                [
-                    ['text' => "كلشي يخصنا", 'url' => "https://t.me/fx2link/5"],
-                    ['text' => "مهام", 'url' => "https://t.me/fx2link/8"]
+        // كيبورد مختلف لكل قروب
+        if ($chat_id == -1002509155667) {
+            $keyboard = [
+                'inline_keyboard' => [
+                    [['text' => "القوانين", 'url' => "https://t.me/fx2link/3"]],
+                    [['text' => "وصف - رسبونات", 'url' => "https://t.me/FX2Gta5"]],
+                    [['text' => "الدعم", 'url' => "https://t.me/itddbot"]],
+                    [['text' => "مهام", 'url' => "https://t.me/fx2link/8"]],
+                   [['text' => "كلشي يخصنا", 'url' => "https://t.me/fx2link/5"]],
                 ]
-            ]
-        ];
+            ];
+        } elseif ($chat_id == -1002876941832) {
+            $keyboard = [
+                'inline_keyboard' => [
+                    [['text' => "الرسبونات", 'url' => "https://t.me/uwtwtwti"]],
+                    [['text' => "القوانين", 'url' => "https://t.me/gigititqq"]],
+
+                ]
+            ];
+        } else {
+            $keyboard = ['inline_keyboard' => []]; // احتياط
+        }
 
         $sent = bot('sendMessage', [
             'chat_id' => $chat_id,
@@ -316,7 +324,6 @@ if ($message) {
 
     // أمر فتح القروب
     if (mb_strtolower($text) == "فتح القروب") {
-
         if (!in_array($user_id, $allowed_ids)) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
@@ -354,6 +361,7 @@ if ($message) {
         ]);
     }
 }
+
 
 
 
